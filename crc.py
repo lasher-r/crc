@@ -40,8 +40,7 @@ def crc(string_int, v=False):
 
 if __name__ == "__main__":
     # string we're trying to send
-    string = "Hello, world! this is a longer message"
-
+    string = "Hello, world!"
     # convert the string to an int
     # Calc the crc and append it to the message
     string_int = int.from_bytes(string.encode(), "big")
@@ -75,9 +74,12 @@ if __name__ == "__main__":
 
     # if the crc is 0 the message is not corrupted
     # convert the message to an ascii string (ignoring the last two [crc] bytes)
-    bin_array_c = corrupted.to_bytes(
-        (corrupted.bit_length() + 7) // 8, "big")[:-2]
-    print(bin_array_c.decode())
+    if crc_received_corrupted == 0:
+        bin_array_c = corrupted.to_bytes(
+            (corrupted.bit_length() + 7) // 8, "big")[:-2]
+        print(bin_array_c.decode())
+    else:
+        print("message corrupted")
 
 
 '''
@@ -133,5 +135,6 @@ Using the polynomial allows us to add (and importantly, subtract) terms w/o carr
 0x11021
 
 This is just a well known, common CRC polynomial that you get off a list.
+
 
 '''
